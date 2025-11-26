@@ -1,0 +1,47 @@
+---
+import '../styles/global.css'; // Import CSS yang tadi kita buat
+
+const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<title>{title}</title>
+        
+        <!-- Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+        <!-- Slot adalah tempat isi halaman akan muncul -->
+		<slot />
+
+        <!-- Script Animasi Scroll (Reveal) Global -->
+        <script>
+            const observerOptions = { threshold: 0.12 };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Jalankan setiap kali halaman dimuat
+            const els = document.querySelectorAll('.reveal');
+            els.forEach(el => observer.observe(el));
+            
+            // Khusus Hero Text agar muncul lebih cepat
+            setTimeout(()=>{
+                const hero = document.querySelector('#hero .container');
+                if(hero) hero.classList.add('is-visible');
+            }, 120);
+        </script>
+	</body>
+</html>

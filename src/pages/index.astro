@@ -1,16 +1,40 @@
 ---
+import { getCollection } from 'astro:content';
+import MainLayout from '../layouts/MainLayout.astro';
+import Navbar from '../components/Navbar.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Belajar from '../components/Belajar.astro'; // Ini sudah handle datanya sendiri di dalam
+import Cerita from '../components/Cerita.astro';   // Ini sudah handle datanya sendiri di dalam
+import Footer from '../components/Footer.astro';
 
+// Komponen React
+import Proyek from '../components/react/Proyek.jsx';
+import Karya from '../components/react/Karya.jsx';
+import FaqJoin from '../components/react/FaqJoin.jsx';
+
+// 1. FETCH DATA UNTUK REACT COMPONENT
+const dataKarya = await getCollection('karya');
+const dataProyek = await getCollection('proyek');
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<MainLayout title="Jejak Aksi — Melangkah Bersama, Menorehkan Manfaat">
+  <Navbar />
+  
+  <main>
+    <Hero />
+    <About />
+    
+    <!-- 2. OPER DATA KE REACT VIA PROPS -->
+    <!-- Karya client:visible data={dataKarya} /-->
+    <!-- Proyek client:visible data={dataProyek} /-->
+    
+    <!-- Astro Component (Mereka fetch data sendiri di dalam filenya) -->
+    <!-- Belajar /--> 
+    <Cerita /> 
+    
+    <FaqJoin client:visible />
+  </main>
+
+  <Footer />
+</MainLayout>

@@ -1,0 +1,42 @@
+---
+import { ShieldCheck, HeartHandshake, UserCheck, Clock, ClipboardCheck, Hammer, Feather, Flame, Scale } from 'lucide-react';
+
+const values = [
+  { title: 'Jujur', icon: ShieldCheck },
+  { title: 'Peduli', icon: HeartHandshake },
+  { title: 'Mandiri', icon: UserCheck },
+  { title: 'Disiplin', icon: Clock },
+  { title: 'Tanggung jawab', icon: ClipboardCheck },
+  { title: 'Kerja keras', icon: Hammer },
+  { title: 'Sederhana', icon: Feather },
+  { title: 'Berani', icon: Flame },
+  { title: 'Adil', icon: Scale },
+];
+
+const colors = ["accent","comp1","comp2","comp3"];
+---
+
+<section id="about" class="py-16 border-t border-gray-100">
+  <div class="max-w-6xl mx-auto px-4 grid md:grid-cols-2 gap-10 reveal">
+    <div>
+      <h2 class="font-heading text-3xl font-semibold title-accent">Tentang Jejak Aksi</h2>
+      <p class="mt-4 text-gray-700">
+        Jejak Aksi lahir dari keyakinan sederhana: setiap langkah meninggalkan manfaat. Kami mengajak pemuda-pemudi untuk bergerak bersama,
+        menyalakan aksi nyata, dan menjaga integritas dalam prosesnya — transparan, inklusif, dan berdampak.
+      </p>
+    </div>
+    <div class="bg-white border rounded-2xl p-6 card">
+      <h3 class="font-heading text-xl font-semibold">9 Nilai Integritas</h3>
+      <div class="mt-5 grid grid-cols-2 sm:grid-cols-3 gap-4">
+        {values.map(({title, icon: Icon}) => (
+          <div class="flex items-center gap-3 p-3 rounded-xl ring-1 ring-gray-100 hover:shadow-card transition bg-gradient-to-br from-comp3/20 via-white to-white">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center text-primary shadow" style={`background: var(--ja-${colors[Math.floor(Math.random()*4)]})`}>
+              <Icon size={22} />
+            </div>
+            <span class="text-sm font-semibold text-primary">{title}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

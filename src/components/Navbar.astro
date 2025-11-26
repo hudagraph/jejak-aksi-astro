@@ -1,0 +1,54 @@
+---
+// Area Server (Kosong karena tidak butuh data dinamis)
+---
+
+<header class="sticky top-0 z-50 nav-glass border-b border-gray-100">
+  <nav class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-4 group">
+      <img
+        src="https://i.imgur.com/8mHlbHx.png"
+        alt="Logo Jejak Aksi"
+        class="h-10 w-auto md:h-12 lg:h-14 object-contain"
+        width="160" height="160"
+        loading="eager"
+      />
+    </a>
+    
+    <!-- Menu Desktop -->
+    <div class="hidden md:flex gap-7 text-base font-medium items-center">
+      <a href="#about"   class="hover:text-primary">Tentang</a>
+      <!--a href="#karya"   class="hover:text-primary">Karya</a-->
+      <!--a href="#proyek"  class="hover:text-primary">Proyek</a-->
+      <!--a href="#belajar" class="hover:text-primary">Belajar</a-->
+      <a href="#cerita"  class="hover:text-primary">Cerita</a>
+      <a href="#faq"     class="hover:text-primary">FAQ</a>
+      <a href="#contact" class="hover:text-primary">Kontak</a>
+      <a href="#join" class="ml-2 btn-rounded bg-primary text-white hover:brightness-110">
+        Gabung Sekarang
+      </a>
+    </div>
+
+    <!-- Tombol Menu Mobile -->
+    <button id="menu-btn" class="md:hidden p-2 rounded hover:bg-gray-100 text-2xl" aria-label="Toggle menu">☰</button>
+  </nav>
+
+  <!-- Menu Mobile -->
+  <div id="mobile-menu" class="hidden md:hidden flex flex-col border-t border-gray-100 px-4 py-3 gap-3 text-base bg-white font-medium">
+    <a href="#about"   class="hover:text-primary">Tentang</a>
+    <!--a href="#karya"   class="hover:text-primary">Karya</a-->
+    <!--a href="#proyek"  class="hover:text-primary">Proyek</a-->
+    <!--a href="#belajar" class="hover:text-primary">Belajar</a-->
+    <a href="#faq"     class="hover:text-primary">FAQ</a>
+    <a href="#join"    class="hover:text-primary">Gabung</a>
+  </div>
+</header>
+
+<script>
+  // Script sederhana untuk buka tutup menu di HP
+  const btn = document.getElementById('menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  
+  btn?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>
