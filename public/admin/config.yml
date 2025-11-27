@@ -39,7 +39,7 @@ collections:
       - {label: "Deskripsi", name: "description", widget: "text"}
       - {label: "File Gambar", name: "image", widget: "image"}
 
-  # 3. KOLEKSI PROYEK
+  # 3. KOLEKSI PROYEK (Update: Tambah Link)
   - name: "proyek"
     label: "Proyek & Kegiatan"
     folder: "src/content/proyek"
@@ -50,6 +50,7 @@ collections:
       - {label: "Kategori", name: "category", widget: "select", options: ["Sosial Media Campaign", "Volunteering", "Aksi Integritas", "Webinar"]}
       - {label: "Deskripsi", name: "description", widget: "text"}
       - {label: "Gambar Thumbnail", name: "image", widget: "image"}
+      - {label: "Link Kegiatan (IG/TikTok/Web)", name: "link", widget: "string", required: false}
 
   # 4. KOLEKSI BELAJAR (E-Book)
   - name: "belajar"

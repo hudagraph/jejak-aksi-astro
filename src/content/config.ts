@@ -43,6 +43,7 @@ const proyekCollection = defineCollection({
     category: z.string(),
     description: z.string(),
     image: z.string(),
+    link: z.string().optional(), // Tambahkan ini (opsional)
   }),
 });
 
