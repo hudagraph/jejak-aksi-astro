@@ -13,28 +13,28 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
 		<title>{title}</title>
 
         <!-- Google Analytics (GA4) -->
-        <!-- Script dimuat secara async agar tidak memperlambat website -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6SSEY9KBG" is:inline></script>
         <script is:inline>
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-
-          // Konfigurasi dengan Measurement ID Anda
           gtag('config', 'G-P6SSEY9KBG');
         </script>
         
+        <!-- NETLIFY IDENTITY WIDGET (WAJIB ADA UTK CMS) -->
+        <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" is:inline></script>
+
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
 	</head>
 	<body>
-        <!-- Slot adalah tempat isi halaman akan muncul -->
 		<slot />
 
-        <!-- Script Animasi Scroll (Reveal) Global -->
+        <!-- Script Animasi & Redirect Netlify Identity -->
         <script>
+            // 1. Logic Animasi Reveal
             const observerOptions = { threshold: 0.12 };
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -45,15 +45,24 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
                 });
             }, observerOptions);
 
-            // Jalankan setiap kali halaman dimuat (untuk navigasi Astro)
             const els = document.querySelectorAll('.reveal');
             els.forEach(el => observer.observe(el));
             
-            // Khusus Hero Text agar muncul lebih cepat
             setTimeout(()=>{
                 const hero = document.querySelector('#hero .container');
                 if(hero) hero.classList.add('is-visible');
             }, 120);
+
+            // 2. Logic Redirect Netlify Identity (Agar habis login langsung masuk admin)
+            if (window.netlifyIdentity) {
+                window.netlifyIdentity.on("init", user => {
+                if (!user) {
+                    window.netlifyIdentity.on("login", () => {
+                        document.location.href = "/admin/";
+                    });
+                }
+                });
+            }
         </script>
 	</body>
 </html>

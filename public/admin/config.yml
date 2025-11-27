@@ -1,0 +1,65 @@
+backend:
+  name: git-gateway
+  branch: main # Pastikan branch utama kamu namanya 'main'
+
+media_folder: "public/images/uploads" # Tempat gambar diupload fisik
+public_folder: "/images/uploads"      # Link yang akan tertulis di markdown
+
+# URL Website kamu (untuk preview)
+site_url: "https://jejakaksi.com"
+display_url: "https://jejakaksi.com"
+logo_url: "https://i.imgur.com/8mHlbHx.png"
+
+# Locale Indonesia
+locale: "id"
+
+collections:
+  # 1. KOLEKSI CERITA (Blog)
+  - name: "cerita"
+    label: "Cerita & Jurnal"
+    folder: "src/content/cerita"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Judul Artikel", name: "title", widget: "string"}
+      - {label: "Tanggal Posting", name: "date", widget: "datetime"}
+      - {label: "Penulis", name: "author", widget: "string", default: "Tim Jejak Aksi"}
+      - {label: "Deskripsi Singkat", name: "description", widget: "text"}
+      - {label: "Gambar Utama", name: "image", widget: "image"}
+      - {label: "Isi Artikel", name: "body", widget: "markdown"}
+
+  # 2. KOLEKSI KARYA (Poster/Visual)
+  - name: "karya"
+    label: "Katalog Karya"
+    folder: "src/content/karya"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Judul Karya", name: "title", widget: "string"}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "File Gambar", name: "image", widget: "image"}
+
+  # 3. KOLEKSI PROYEK
+  - name: "proyek"
+    label: "Proyek & Kegiatan"
+    folder: "src/content/proyek"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Nama Proyek", name: "title", widget: "string"}
+      - {label: "Kategori", name: "category", widget: "select", options: ["Sosial Media Campaign", "Volunteering", "Aksi Integritas", "Webinar"]}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "Gambar Thumbnail", name: "image", widget: "image"}
+
+  # 4. KOLEKSI BELAJAR (E-Book)
+  - name: "belajar"
+    label: "Materi Belajar"
+    folder: "src/content/belajar"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - {label: "Judul Materi", name: "title", widget: "string"}
+      - {label: "Tipe", name: "tag", widget: "select", options: ["E-Book", "E-Course", "E-Learning"]}
+      - {label: "Deskripsi", name: "description", widget: "text"}
+      - {label: "Cover Image", name: "image", widget: "image"}
+      - {label: "Link Download/Akses (Opsional)", name: "link", widget: "string", required: false}
