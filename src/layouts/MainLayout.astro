@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css'; // Import CSS yang tadi kita buat
+import '../styles/global.css';
 
 const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
 ---
@@ -11,6 +11,18 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<title>{title}</title>
+
+        <!-- Google Analytics (GA4) -->
+        <!-- Script dimuat secara async agar tidak memperlambat website -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6SSEY9KBG" is:inline></script>
+        <script is:inline>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          // Konfigurasi dengan Measurement ID Anda
+          gtag('config', 'G-P6SSEY9KBG');
+        </script>
         
         <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -33,7 +45,7 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
                 });
             }, observerOptions);
 
-            // Jalankan setiap kali halaman dimuat
+            // Jalankan setiap kali halaman dimuat (untuk navigasi Astro)
             const els = document.querySelectorAll('.reveal');
             els.forEach(el => observer.observe(el));
             
