@@ -1,9 +1,10 @@
 ---
-title: "Building an Integrity Generation: Geraka Pemuda Penajam Paser Utara Menuju Daerah Bebas Korupsi" 
+title: "Building an Integrity Generation: Gerakan Pemuda Penajam Paser Utara
+  Menuju Daerah Bebas Korupsi"
 date: 2025-11-26
-author: "Nadya Shafwah Yanuwar"
-description: "Tulisan Terbaik Esay Jejak Aksi 2025"
-image: "https://i.imgur.com/deZACD6.jpeg"
+author: Nadya Shafwah Yanuwar
+description: Tulisan Terbaik Esay Jejak Aksi 2025
+image: https://i.imgur.com/deZACD6.jpeg
 ---
 >“Corruption is the enemy of development, and of good governance. It must be got rid of. Both the government and the people at large must come together to achieve this national objective.”
 
