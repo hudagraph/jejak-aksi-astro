@@ -1,55 +1,43 @@
-import { Navigation, Pagination, A11y } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+import React from 'react';
 
-// KITA HAPUS DATA DUMMY 'const items = [...]' DARI SINI
-// Ganti dengan menerima props { data }
-
-export default function Karya({ data = [] }) { 
+const Karya = ({ data }) => {
+  // 'data' di sini sudah berisi maksimal 3 item yang dikirim dari index.astro
+  
   return (
-    <section id="karya" className="py-16 border-t border-gray-100">
-      <div 
-        className="max-w-6xl mx-auto px-4 reveal"
-        suppressHydrationWarning={true}
-      >
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-heading text-3xl font-semibold title-accent">Katalog Karya</h2>
-            <p className="text-gray-600">Pilihan karya visual & konten komunitas.</p>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <button className="karya-prev p-2 rounded-lg border border-primary/30 hover:bg-comp3/40" aria-label="Prev">‹</button>
-            <button className="karya-next p-2 rounded-lg border border-primary/30 hover:bg-comp3/40" aria-label="Next">›</button>
-          </div>
+    <section className="py-20" id="karya">
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-end mb-10">
+           <div>
+             <h2 className="text-3xl font-bold text-gray-800 mb-2">Katalog Karya</h2>
+             <p className="text-gray-600">Karya kreatif dari anggota komunitas.</p>
+           </div>
+           {/* Tombol di kanan atas (opsional, bisa juga ditaruh di bawah) */}
+           <a href="/karya" className="hidden md:inline-flex text-primary font-medium hover:underline">
+             Lihat Semua &rarr;
+           </a>
         </div>
 
-        <Swiper
-          className="mt-6"
-          modules={[Navigation, Pagination, A11y]}
-          slidesPerView={1.1}
-          spaceBetween={14}
-          navigation={{ nextEl: '.karya-next', prevEl: '.karya-prev' }}
-          pagination={{ el: '.karya-pagination', clickable: true }}
-          breakpoints={{ 640:{slidesPerView:1.5, spaceBetween:16}, 768:{slidesPerView:2.2, spaceBetween:18}, 1024:{slidesPerView:3, spaceBetween:20} }}
-        >
-          {/* Mapping data dari Props */}
-          {data.map((item, idx)=> (
-            <SwiperSlide key={idx}>
-              <article className="card rounded-2xl overflow-hidden bg-white border">
-                {/* Perhatikan aksesnya: item.data.image (karena struktur dari Content Collection) */}
-                <img src={item.data.image} alt={item.data.title} className="w-full h-48 object-cover" loading="lazy" />
-                <div className="p-5">
-                  <h3 className="font-heading font-semibold text-lg text-primary">{item.data.title}</h3>
-                  <p className="text-sm text-gray-700 mt-2">{item.data.description}</p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {data.map((item, index) => (
+             <div key={index} className="bg-white rounded-lg border border-gray-100 p-4 hover:shadow-lg transition-shadow">
+                {/* Isi Card Karya sesuai desainmu */}
+                <div className="aspect-video bg-gray-100 rounded-md mb-4 overflow-hidden">
+                   <img src={item.data.image} alt={item.data.title} className="w-full h-full object-cover" />
                 </div>
-              </article>
-            </SwiperSlide>
+                <h3 className="font-bold text-lg mb-1">{item.data.title}</h3>
+                <p className="text-sm text-gray-500 line-clamp-2">{item.data.description}</p>
+                <a href={`/karya/${item.slug}`} className="text-sm text-primary mt-3 block font-medium">Lihat Detail</a>
+             </div>
           ))}
-          <div className="karya-pagination mt-4"></div>
-        </Swiper>
+        </div>
+
+        {/* Tombol Lihat Semua Mobile */}
+        <div className="mt-8 text-center md:hidden">
+           <a href="/karya" className="btn btn-outline">Lihat Semua Karya</a>
+        </div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default Karya;

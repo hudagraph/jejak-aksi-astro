@@ -1,0 +1,40 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+// Pastikan folder content/belajar ada
+let allBelajar = [];
+try { allBelajar = await getCollection('belajar'); } catch(e) {}
+const sortedBelajar = allBelajar.sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
+---
+
+<MainLayout title="Ruang Belajar - Jejak Aksi">
+  <Navbar />
+  <main class="pt-24 pb-20 container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-bold mb-4">Ruang Belajar</h1>
+      <p class="text-gray-600">Akselerasi pengetahuanmu di sini.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {sortedBelajar.map((item) => (
+        <article class="flex flex-col bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all">
+          <a href={`/belajar/${item.slug}`} class="h-52 overflow-hidden bg-gray-100">
+            <img src={item.data.image} alt={item.data.title} class="w-full h-full object-cover hover:scale-105 transition-transform"/>
+          </a>
+          <div class="p-6 flex flex-col flex-1">
+             <div class="text-xs font-bold text-primary mb-2 uppercase">{item.data.category || 'Artikel'}</div>
+             <h2 class="text-xl font-bold mb-3 hover:text-primary transition-colors">
+                <a href={`/belajar/${item.slug}`}>{item.data.title}</a>
+             </h2>
+             <p class="text-gray-600 text-sm line-clamp-3 mb-4 flex-1">{item.data.description}</p>
+             <a href={`/belajar/${item.slug}`} class="text-primary font-medium hover:gap-2 flex items-center gap-1">Baca Selengkapnya &rarr;</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</MainLayout>

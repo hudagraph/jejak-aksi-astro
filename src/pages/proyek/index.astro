@@ -1,0 +1,37 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+import Navbar from '../../components/Navbar.astro';
+import Footer from '../../components/Footer.astro';
+
+const allProyek = await getCollection('proyek');
+const sortedProyek = allProyek.sort((a, b) => new Date(b.data.pubDate) - new Date(a.data.pubDate));
+---
+
+<MainLayout title="Semua Proyek - Jejak Aksi">
+  <Navbar />
+  <main class="pt-24 pb-20 container mx-auto px-4">
+    <div class="text-center mb-16">
+      <h1 class="text-4xl font-bold mb-4">Direktori Proyek</h1>
+      <p class="text-gray-600">Jejak langkah nyata kami dalam membangun negeri.</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {sortedProyek.map((item) => (
+        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-all">
+          <div class="h-56 overflow-hidden">
+            <img src={item.data.image} alt={item.data.title} class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"/>
+          </div>
+          <div class="p-6">
+            <h2 class="text-xl font-bold mb-2">
+                <a href={`/proyek/${item.slug}`} class="hover:text-primary">{item.data.title}</a>
+            </h2>
+            <p class="text-gray-600 mb-4 line-clamp-3">{item.data.description}</p>
+            <a href={`/proyek/${item.slug}`} class="text-primary font-medium hover:underline">Lihat Detail →</a>
+          </div>
+        </div>
+      ))}
+    </div>
+  </main>
+  <Footer />
+</MainLayout>

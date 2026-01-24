@@ -22,6 +22,6 @@ export default {
     }
   },
   plugins: [
-    typography, // Plugin diaktifkan di sini
+    require('@tailwindcss/typography'),
   ],
 }

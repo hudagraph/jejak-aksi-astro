@@ -1,40 +1,58 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '../layouts/MainLayout.astro';
-import Navbar from '../components/Navbar.astro';
-import Hero from '../components/Hero.astro';
-import About from '../components/About.astro';
-import Belajar from '../components/Belajar.astro'; // Ini sudah handle datanya sendiri di dalam
-import Cerita from '../components/Cerita.astro';   // Ini sudah handle datanya sendiri di dalam
-import Footer from '../components/Footer.astro';
+import { getCollection } from "astro:content";
+import MainLayout from "../layouts/MainLayout.astro";
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import About from "../components/About.astro";
+import Footer from "../components/Footer.astro";
 
-// Komponen React
-import Proyek from '../components/react/Proyek.jsx';
-import Karya from '../components/react/Karya.jsx';
-import FaqJoin from '../components/react/FaqJoin.jsx';
+// Import Komponen Tampilan
+import Cerita from "../components/Cerita.astro";
+import Belajar from "../components/Belajar.astro";
+import Proyek from "../components/react/Proyek.jsx";
+import Karya from "../components/react/Karya.jsx";
+import FaqJoin from "../components/react/FaqJoin.jsx";
 
-// 1. FETCH DATA UNTUK REACT COMPONENT
-const dataKarya = await getCollection('karya');
-const dataProyek = await getCollection('proyek');
+// Helper Sort Tanggal
+const sortDate = (a, b) =>
+  new Date(b.data.pubDate || b.data.date) -
+  new Date(a.data.pubDate || a.data.date);
+
+// 1. FETCH DATA (Ambil semua, nanti di-slice)
+const allProyek = await getCollection("proyek");
+const recentProyek = allProyek.sort(sortDate).slice(0, 3);
+
+const allKarya = await getCollection("karya");
+const recentKarya = allKarya.sort(sortDate).slice(0, 3);
+
+const allCerita = await getCollection("cerita");
+const recentCerita = allCerita.sort(sortDate).slice(0, 3);
+
+// Handle Belajar (Try-Catch in case collection belum dibuat)
+let allBelajar = [];
+try {
+  allBelajar = await getCollection("belajar");
+} catch (e) {
+  console.log("Collection belajar belum ada");
+}
+const recentBelajar = allBelajar.sort(sortDate).slice(0, 3);
 ---
 
 <MainLayout title="Jejak Aksi — Melangkah Bersama, Menorehkan Manfaat">
   <Navbar />
-  
   <main>
     <Hero />
     <About />
-    
-    <!-- 2. OPER DATA KE REACT VIA PROPS -->
-    <!-- Karya client:visible data={dataKarya} /-->
-    <Proyek client:visible data={dataProyek} />
-    
-    <!-- Astro Component (Mereka fetch data sendiri di dalam filenya) -->
-    <!-- Belajar /--> 
-    <Cerita /> 
-    
+
+    {allProyek.length > 0 && <Proyek client:visible data={recentProyek} />}
+
+    {allKarya.length > 0 && <Karya client:visible data={recentKarya} />}
+
+    {allBelajar.length > 0 && <Belajar data={recentBelajar} />}
+
+    {allCerita.length > 0 && <Cerita data={recentCerita} />}
+
     <FaqJoin client:visible />
   </main>
-
   <Footer />
 </MainLayout>

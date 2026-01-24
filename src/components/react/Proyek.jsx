@@ -1,95 +1,85 @@
-import { Navigation, Pagination, A11y } from 'swiper/modules'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
-import 'swiper/css/navigation'
-import 'swiper/css/pagination'
+import React from 'react';
+import { motion } from 'framer-motion';
 
-export default function Proyek({ data = [] }){
+const Proyek = ({ data }) => {
+  // Data sudah dipotong 3 dari index.astro, jadi kita tinggal map
+  
   return (
-    <section id="proyek" className="py-16 border-t border-gray-100">
-      <div 
-        className="max-w-6xl mx-auto px-4 reveal"
-        suppressHydrationWarning={true}
-      >
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <h2 className="font-heading text-3xl font-semibold title-accent">Katalog Proyek</h2>
-            <p className="text-gray-600">Kategori: Sosial Media Campaign, Volunteering, Aksi Integritas, Seminar Aksi.</p>
-          </div>
-          <div className="hidden md:flex items-center gap-2">
-            <button className="proyek-prev p-2 rounded-lg border border-primary/30 hover:bg-comp3/40" aria-label="Prev">‹</button>
-            <button className="proyek-next p-2 rounded-lg border border-primary/30 hover:bg-comp3/40" aria-label="Next">›</button>
-          </div>
+    <section className="py-20 bg-gray-50" id="proyek">
+      <div className="container mx-auto px-4">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">Proyek Terbaru</h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Aksi nyata yang telah kami lakukan bersama para relawan.
+          </p>
         </div>
 
-        <Swiper
-          className="mt-6"
-          modules={[Navigation, Pagination, A11y]}
-          slidesPerView={1.1}
-          spaceBetween={14}
-          navigation={{ nextEl: '.proyek-next', prevEl: '.proyek-prev' }}
-          pagination={{ el: '.proyek-pagination', clickable: true }}
-          breakpoints={{ 640:{slidesPerView:1.5, spaceBetween:16}, 768:{slidesPerView:2.2, spaceBetween:18}, 1024:{slidesPerView:3, spaceBetween:20} }}
-        >
-          {data.map((item, idx)=> {
-            // Cek apakah ada link di data proyek tersebut
-            const hasLink = !!item.data.link;
-            // Tentukan tag pembungkus: 'a' jika ada link, 'div' jika tidak
-            const Wrapper = hasLink ? 'a' : 'div';
-            // Props tambahan jika itu adalah link (buka di tab baru)
-            const wrapperProps = hasLink ? {
-                href: item.data.link,
-                target: "_blank",
-                rel: "noopener noreferrer",
-                className: "block h-full group cursor-pointer" // Tambahkan cursor pointer
-            } : {
-                className: "block h-full"
-            };
+        {/* Grid Layout (Menggantikan Swiper) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {data.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.1 }}
+              className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden group border border-gray-100"
+            >
+              {/* Gambar Thumbnail */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={item.data.image || '/images/default-proyek.jpg'} // Pastikan ada fallback image
+                  alt={item.data.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-semibold text-primary">
+                  {item.data.category || 'Sosial'}
+                </div>
+              </div>
 
-            return (
-                <SwiperSlide key={idx} className="h-auto">
-                <article className="card rounded-2xl overflow-hidden bg-white border h-full flex flex-col hover:-translate-y-1 transition duration-300">
-                    {/* Pembungkus Dinamis (a atau div) */}
-                    <Wrapper {...wrapperProps}>
-                        <div className="relative overflow-hidden h-48">
-                            <img 
-                                src={item.data.image} 
-                                alt={item.data.title} 
-                                className={`w-full h-full object-cover transition duration-500 ${hasLink ? 'group-hover:scale-105' : ''}`} 
-                                loading="lazy" 
-                            />
-                            {/* Indikator Link Icon (Opsional, biar user tau bisa diklik) */}
-                            {hasLink && (
-                                <div className="absolute top-3 right-3 bg-white/90 p-1.5 rounded-full shadow opacity-0 group-hover:opacity-100 transition">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-                                </div>
-                            )}
-                        </div>
-                        
-                        <div className="p-5 flex-1 flex flex-col">
-                            <div>
-                                <div className="chip chip-accent font-semibold">{item.data.category}</div>
-                            </div>
-                            <h3 className={`font-heading font-semibold text-lg text-primary mt-2 ${hasLink ? 'group-hover:text-accent transition' : ''}`}>
-                                {item.data.title}
-                            </h3>
-                            <p className="text-sm text-gray-700 mt-2 flex-1">{item.data.description}</p>
-                            
-                            {hasLink && (
-                                <span className="text-xs font-bold text-primary mt-4 inline-flex items-center gap-1">
-                                    Lihat Detail
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                                </span>
-                            )}
-                        </div>
-                    </Wrapper>
-                </article>
-                </SwiperSlide>
-            )
-          })}
-          <div className="proyek-pagination mt-4"></div>
-        </Swiper>
+              {/* Konten Card */}
+              <div className="p-6">
+                <div className="text-sm text-gray-500 mb-2">
+                  {new Date(item.data.pubDate).toLocaleDateString('id-ID', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric'
+                  })}
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-gray-800 line-clamp-2">
+                  <a href={`/proyek/${item.slug}`} className="hover:text-primary transition-colors">
+                    {item.data.title}
+                  </a>
+                </h3>
+                <p className="text-gray-600 text-sm line-clamp-3 mb-4">
+                  {item.data.description}
+                </p>
+                <a
+                  href={`/proyek/${item.slug}`}
+                  className="inline-flex items-center text-primary font-medium hover:gap-2 transition-all gap-1 text-sm"
+                >
+                  Lihat Detail
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </a>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Tombol Lihat Selengkapnya */}
+        <div className="mt-12 text-center">
+          <a
+            href="/proyek"
+            className="inline-block px-8 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-full hover:bg-gray-50 hover:border-gray-400 transition-all"
+          >
+            Lihat Semua Proyek
+          </a>
+        </div>
       </div>
     </section>
-  )
-}
+  );
+};
+
+export default Proyek;

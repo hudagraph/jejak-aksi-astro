@@ -1,0 +1,64 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  // Menggunakan try-catch agar tidak error jika folder belajar masih kosong
+  let posts = [];
+  try {
+    posts = await getCollection('belajar');
+  } catch (e) {
+    console.log("Collection belajar belum ada atau kosong");
+  }
+  
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<MainLayout title={`${post.data.title} - Ruang Belajar`}>
+  <article class="pt-24 pb-20 bg-gray-50/50 min-h-screen">
+    <div class="container mx-auto px-4 max-w-3xl bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-gray-100 mt-8">
+      
+      <nav class="flex items-center text-sm text-gray-500 mb-6">
+        <a href="/" class="hover:text-primary">Beranda</a>
+        <span class="mx-2">/</span>
+        <a href="/belajar" class="hover:text-primary">Belajar</a>
+        <span class="mx-2">/</span>
+        <span class="text-gray-800 truncate">{post.data.title}</span>
+      </nav>
+
+      <header class="mb-8 border-b border-gray-100 pb-8">
+        <div class="text-primary font-bold tracking-wide text-xs uppercase mb-2">
+          {post.data.category || 'Materi Pembelajaran'}
+        </div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
+          {post.data.title}
+        </h1>
+        <div class="flex items-center gap-4 text-sm text-gray-500">
+             <span>📅 {new Date(post.data.pubDate).toLocaleDateString('id-ID', { dateStyle: 'long' })}</span>
+             <span>⏱️ {post.data.readTime || '5 min'} baca</span>
+        </div>
+      </header>
+
+      {post.data.image && (
+        <div class="rounded-xl overflow-hidden mb-8">
+          <img src={post.data.image} alt={post.data.title} class="w-full object-cover" />
+        </div>
+      )}
+
+      <div class="prose prose-lg prose-indigo max-w-none">
+        <Content />
+      </div>
+    </div>
+
+    <div class="container mx-auto px-4 max-w-3xl mt-8 text-center">
+        <a href="/belajar" class="text-primary font-bold hover:underline">← Kembali ke Ruang Belajar</a>
+    </div>
+  </article>
+</MainLayout>
