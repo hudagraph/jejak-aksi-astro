@@ -1,7 +1,17 @@
 ---
 import '../styles/global.css';
 
-const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
+// 1. Terima props dinamis untuk SEO & Social Share
+// Kita kasih nilai default biar kalau ada halaman yang lupa kasih props, tetap aman.
+const { 
+  title = "Jejak Aksi — Melangkah Bersama",
+  description = "Gerakan kolaboratif pemuda untuk menebar manfaat dan kebaikan bagi negeri. Bergabunglah bersama kami!",
+  image = "/images/uploads/pray-for-sumatera.png" // Ganti dengan gambar default poster komunitasmu
+} = Astro.props;
+
+// Ambil URL halaman saat ini (Penting agar link share mengarah ke halaman yang benar)
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || Astro.url.origin);
+const socialImageURL = new URL(image, Astro.site || Astro.url.origin);
 ---
 
 <!doctype html>
@@ -10,9 +20,24 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{title}</title>
+        <meta name="generator" content={Astro.generator} />
 
-        <!-- Google Analytics (GA4) -->
+        <title>{title}</title>
+        <meta name="description" content={description} />
+        <link rel="canonical" href={canonicalURL} />
+
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={canonicalURL} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:image" content={socialImageURL} />
+
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:url" content={canonicalURL} />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={description} />
+        <meta property="twitter:image" content={socialImageURL} />
+
         <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6SSEY9KBG" is:inline></script>
         <script is:inline>
           window.dataLayer = window.dataLayer || [];
@@ -21,10 +46,8 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
           gtag('config', 'G-P6SSEY9KBG');
         </script>
         
-        <!-- NETLIFY IDENTITY WIDGET (WAJIB ADA UTK CMS) -->
         <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" is:inline></script>
 
-        <!-- Google Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
@@ -32,7 +55,6 @@ const { title = "Jejak Aksi — Melangkah Bersama" } = Astro.props;
 	<body>
 		<slot />
 
-        <!-- Script Animasi & Redirect Netlify Identity -->
         <script>
             // 1. Logic Animasi Reveal
             const observerOptions = { threshold: 0.12 };

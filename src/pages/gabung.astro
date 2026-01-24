@@ -1,0 +1,27 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import FaqJoin from '../components/react/FaqJoin.jsx';
+---
+
+<MainLayout 
+  title="Gabung Relawan - Jejak Aksi" 
+  description="Mari berkolaborasi bersama kami menebar manfaat untuk negeri. Daftar sekarang!"
+>
+  <main class="pt-24 pb-20 bg-gray-50 min-h-screen">
+    
+    <div class="container mx-auto px-4 text-center mb-10">
+      <h1 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4">
+        Mari Berkolaborasi
+      </h1>
+      <p class="text-gray-600 max-w-2xl mx-auto text-lg">
+        Satu langkah kecilmu bisa menjadi jejak besar bagi mereka yang membutuhkan. 
+        Isi formulir di bawah untuk bergabung.
+      </p>
+    </div>
+
+    <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+       <FaqJoin client:visible />
+    </div>
+
+  </main>
+</MainLayout>
