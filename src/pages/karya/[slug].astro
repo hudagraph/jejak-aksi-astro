@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('karya');
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<MainLayout title={`${post.data.title} - Karya Jejak Aksi`}>
+  <article class="pt-24 pb-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-gray-800">{post.data.title}</h1>
+        <p class="text-gray-500">
+          Karya oleh <span class="font-semibold text-primary">{post.data.author || 'Relawan'}</span> 
+          • {new Date(post.data.pubDate).toLocaleDateString('id-ID', { dateStyle: 'long' })}
+        </p>
+      </div>
+
+      <div class="rounded-xl overflow-hidden shadow-sm border border-gray-100 mb-10 bg-gray-50">
+        <img 
+          src={post.data.image} 
+          alt={post.data.title} 
+          class="w-full h-auto max-h-[600px] object-contain mx-auto"
+        />
+      </div>
+
+      <div class="prose prose-lg mx-auto text-gray-700">
+        <Content />
+      </div>
+
+      <div class="mt-12 text-center">
+        <a href="/karya" class="btn btn-outline btn-sm">← Lihat Karya Lainnya</a>
+      </div>
+    </div>
+  </article>
+</MainLayout>

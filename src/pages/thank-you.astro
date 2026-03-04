@@ -1,0 +1,80 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+---
+
+<MainLayout 
+  title="Terima Kasih! — Jejak Aksi" 
+  description="Pendaftaranmu berhasil diterima. Tim Jejak Aksi akan segera menghubungimu."
+>
+  <main class="min-h-screen bg-gray-50 flex items-center justify-center pt-20 pb-16 px-4">
+    <div class="max-w-lg w-full text-center">
+
+      <!-- Ikon Sukses -->
+      <div class="mx-auto w-24 h-24 rounded-full bg-green-100 flex items-center justify-center mb-8 animate-bounce-once">
+        <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+        </svg>
+      </div>
+
+      <!-- Heading -->
+      <h1 class="text-4xl font-bold text-gray-900 mb-3">Pendaftaran Berhasil! 🎉</h1>
+      <p class="text-gray-500 text-lg mb-8 leading-relaxed">
+        Terima kasih sudah bergabung bersama <strong class="text-gray-700">Jejak Aksi</strong>.<br/>
+        Kami sudah kirim email konfirmasi ke inboxmu ya.
+      </p>
+
+      <!-- Card Info -->
+      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 mb-8 text-left">
+        <p class="font-semibold text-gray-800 mb-4">Langkah selanjutnya:</p>
+        <ul class="space-y-3">
+          <li class="flex gap-3 items-start">
+            <span class="mt-0.5 w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center flex-shrink-0">1</span>
+            <span class="text-gray-600 text-sm">Cek emailmu — ada email konfirmasi dari kami yang masuk.</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <span class="mt-0.5 w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center flex-shrink-0">2</span>
+            <span class="text-gray-600 text-sm">Tunggu pesan dari tim via WhatsApp untuk proses onboarding.</span>
+          </li>
+          <li class="flex gap-3 items-start">
+            <span class="mt-0.5 w-6 h-6 rounded-full bg-green-100 text-green-700 text-xs font-bold flex items-center justify-center flex-shrink-0">3</span>
+            <span class="text-gray-600 text-sm">Jelajahi proyek & cerita di website sambil menunggu!</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- CTA Buttons -->
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a 
+          href="/" 
+          class="btn-rounded btn-primary"
+        >
+          Kembali ke Beranda
+        </a>
+        <a 
+          href="/proyek" 
+          class="btn-rounded border border-gray-200 text-gray-700 hover:bg-gray-100 transition"
+        >
+          Lihat Proyek Kami
+        </a>
+      </div>
+
+      <!-- Kontak -->
+      <p class="mt-8 text-sm text-gray-400">
+        Ada pertanyaan? Email kami di 
+        <a href="mailto:halo@jejakaksi.com" class="text-green-600 hover:underline">halo@jejakaksi.com</a>
+      </p>
+
+    </div>
+  </main>
+</MainLayout>
+
+<style>
+  @keyframes bounce-once {
+    0%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-16px); }
+    60% { transform: translateY(-8px); }
+  }
+  .animate-bounce-once {
+    animation: bounce-once 0.8s ease 0.3s both;
+  }
+</style>

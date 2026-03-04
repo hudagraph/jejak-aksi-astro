@@ -1,0 +1,89 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '../../layouts/MainLayout.astro';
+
+// 1. Generate path untuk semua halaman
+export async function getStaticPaths() {
+  const entries = await getCollection('cerita');
+  return entries.map(entry => ({
+    params: { slug: entry.slug }, 
+    props: { entry },
+  }));
+}
+
+// 2. Ambil data halaman saat ini
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+
+// 3. LOGIC UNTUK "CERITA LAINNYA" (RELATED POSTS)
+const allCerita = await getCollection('cerita');
+const relatedCerita = allCerita
+    .filter(p => p.slug !== entry.slug) // Buang cerita yang sedang dibaca
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()) // Urutkan terbaru
+    .slice(0, 3); // Ambil 3 aja
+---
+
+<MainLayout title={`${entry.data.title} — Jejak Aksi`}>
+    <article class="max-w-3xl mx-auto px-4 py-20 reveal">
+        {/* Tombol Balik */}
+        <a href="/cerita" class="inline-flex items-center text-sm font-semibold text-primary mb-6 hover:underline">
+            ← Kembali ke Semua Cerita
+        </a>
+        
+        {/* Header Artikel */}
+        <img src={entry.data.image} alt={entry.data.title} class="w-full h-64 md:h-96 object-cover rounded-2xl shadow-lg mb-8" />
+        
+        <h1 class="font-heading text-3xl md:text-5xl font-bold text-primary mb-4">{entry.data.title}</h1>
+        
+        <div class="text-gray-500 mb-8 border-b pb-8 flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 text-sm sm:text-base">
+            <div>
+                {entry.data.date.toLocaleDateString('id-ID', { weekday:'long', year: 'numeric', month: 'long', day: 'numeric' })}
+            </div>
+            <div class="hidden sm:block text-gray-300">•</div>
+            <div class="flex items-center gap-2">
+                <span>Oleh</span>
+                <span class="font-semibold text-primary bg-primary/5 px-3 py-1 rounded-full">
+                    {entry.data.author || 'Tim Jejak Aksi'}
+                </span>
+            </div>
+        </div>
+        
+        {/* Isi Artikel */}
+        <div class="prose prose-lg prose-headings:font-heading prose-a:text-blue-600 text-justify">
+            <Content />
+        </div>
+
+        {/* --- BAGIAN REKOMENDASI CERITA LAIN --- */}
+        <div class="mt-20 border-t pt-10">
+            <h3 class="font-heading text-2xl font-bold mb-8 text-primary">Lihat Cerita Lainnya</h3>
+            
+            {relatedCerita.length > 0 ? (
+                <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+                    {relatedCerita.map(post => (
+                        <article class="card rounded-xl overflow-hidden bg-white border group hover:-translate-y-1 transition duration-300">
+                            <a href={`/cerita/${post.slug}`} class="block overflow-hidden h-40">
+                                <img src={post.data.image} alt={post.data.title} class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+                            </a>
+                            <div class="p-4 flex flex-col h-full">
+                                <div class="text-xs text-gray-500 mb-2">
+                                     {post.data.date.toLocaleDateString('id-ID', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                </div>
+                                <h4 class="font-heading font-bold text-lg text-primary leading-tight mb-2">
+                                    <a href={`/cerita/${post.slug}`} class="group-hover:text-accent transition">
+                                        {post.data.title}
+                                    </a>
+                                </h4>
+                                <a href={`/cerita/${post.slug}`} class="text-xs font-bold text-primary hover:underline mt-auto pt-2">
+                                    Baca Tulisan →
+                                </a>
+                            </div>
+                        </article>
+                    ))}
+                </div>
+            ) : (
+                <p class="text-gray-500 italic">Belum ada cerita lainnya saat ini.</p>
+            )}
+        </div>
+
+    </article>
+</MainLayout>
